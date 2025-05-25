@@ -1,11 +1,35 @@
+"use client"
 import MyPostCard from "./MyPostCard"
 import type { Post } from "@/lib/types"
+import { useEffect, useState } from 'react'
+import { postService } from '@/lib/api-service'
 
-interface MyPostListProps {
-  posts: Post[]
-}
 
-export default function MyPostList({ posts }: MyPostListProps) {
+
+export default function MyPostList(){
+  const [posts, setPosts] = useState<Post[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const userStr = localStorage.getItem('user')
+  const user = userStr ? JSON.parse(userStr) : null
+
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await postService.getPost(user.id)
+        setPosts([data])
+      } catch (error: any) {
+        setError(error.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, []) 
+
   if (posts.length === 0) {
     return (
       <div className="text-center py-12">

@@ -5,22 +5,12 @@ import { postService } from '@/lib/api-service'
 import type { Post } from '@/lib/types'
 import PostCard from './PostCard'
 
-interface PostListProps {
-  posts?: Post[]  
-}
-
-export default function PostList({ posts: initialPosts }: PostListProps) {
-  const [posts, setPosts] = useState<Post[]>(initialPosts || [])
-  const [isLoading, setIsLoading] = useState(!initialPosts)
+export default function PostList() {
+  const [posts, setPosts] = useState<Post[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Skip fetching if we have initialPosts
-    if (initialPosts) {
-      setIsLoading(false)
-      return
-    }
-
     const fetchPosts = async () => {
       try {
         const data = await postService.getPosts()
@@ -33,7 +23,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
     }
 
     fetchPosts()
-  }, [initialPosts]) // Only run when initialPosts changes
+  }, []) 
 
   if (isLoading) {
     return <div>Loading posts...</div>

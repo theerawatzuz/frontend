@@ -1,6 +1,6 @@
 import PostList from "@/components/posts/PostList"
-import { posts } from "@/lib/data"
 
 export default function ForumBoard() {
-  return <PostList posts={posts} />
+  // ไม่ต้องส่ง posts prop เพื่อให้ PostList ดึงข้อมูลจาก API เอง
+  return <PostList />
 }

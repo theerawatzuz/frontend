@@ -16,6 +16,18 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isFormVisible, setIsFormVisible] = useState(false)
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('user')
+    if (userStr) {
+      try {
+        setUser(JSON.parse(userStr))
+      } catch (e) {
+        console.error('Error parsing user data:', e)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -33,8 +45,16 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   }, [postId])
 
   const handleAddComment = async (content: string) => {
+    if (!user) {
+      setError("Please login to add a comment")
+      return
+    }
+
     try {
-      const newComment = await commentService.createComment(postId, { content })
+      const newComment = await commentService.createComment(postId, { 
+        content, 
+        fullName: user.fullName,
+      })
       setComments(prev => [...prev, newComment])
       setIsFormVisible(false)
     } catch (error: any) {
@@ -52,10 +72,17 @@ export default function CommentSection({ postId }: CommentSectionProps) {
 
   return (
     <div className="space-y-4">
-      <Button onClick={() => setIsFormVisible(true)}>Add Comment</Button>
-      
+      <Button
+        variant="outline"
+        size="sm"
+        className="text-success border-success hover:bg-green-100/50"
+        onClick={() => setIsFormVisible(true)}
+      >
+        Add Comment
+      </Button>
+
       {isFormVisible && (
-        <CommentForm 
+        <CommentForm
           postId={postId}
           onSubmit={handleAddComment}
           onCancel={() => setIsFormVisible(false)}

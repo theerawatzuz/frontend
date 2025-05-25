@@ -96,21 +96,7 @@ export default function PostDetail({ post }: PostDetailProps) {
                 <MessageCircle className="w-4 h-4 text-grey-300" />
                 <span className="text-grey-300 text-xs">{postDetail?.comments} Comments</span>
               </div>
-              {showCommentForm ? (
-              <div>
-
-              </div>
-     
-              ) : (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-green-500 border-green-500 hover:bg-green-100/50"
-                  onClick={() => setShowCommentForm(true)}
-                >
-                  Add Comment
-                </Button>
-              )}
+         
             </div>
 
             {/* Comment Form */}

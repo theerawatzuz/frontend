@@ -26,6 +26,7 @@ export interface Comment {
   id: number
   postId: number
   author: string
+  fullName: string
   avatar: string
   content: string
   time: string
