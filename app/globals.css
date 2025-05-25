@@ -1,26 +1,103 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Brand Colors */
+    --green-500: #243831;
+    --green-300: #2b5f44;
+    --green-100: #d8e9e4;
+    --golden: #c5a365;
+    --success: #49a569;
+    --grey-100: #bbc2c0;
+    --grey-300: #939494;
+    --text: #191919;
+
+    /* Shadcn UI Variables */
+    --background: 0 0% 100%;
+    --foreground: 210 11% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 11% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 11% 10%;
+    --primary: 156 24% 20%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 156 24% 89%;
+    --secondary-foreground: 210 11% 10%;
+    --muted: 180 7% 74%;
+    --muted-foreground: 180 4% 58%;
+    --accent: 42 26% 59%;
+    --accent-foreground: 210 11% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 156 24% 89%;
+    --input: 156 24% 89%;
+    --ring: 156 24% 20%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 156 24% 20%;
+    --foreground: 0 0% 100%;
+    --card: 156 24% 20%;
+    --card-foreground: 0 0% 100%;
+    --popover: 156 24% 20%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 156 24% 20%;
+    --secondary: 156 15% 25%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 156 15% 25%;
+    --muted-foreground: 180 4% 65%;
+    --accent: 156 15% 25%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 156 15% 25%;
+    --input: 156 15% 25%;
+    --ring: 180 4% 84%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-grey-100 text-text font-sans;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-brand {
+    @apply text-text;
+  }
+
+  .bg-brand-surface {
+    @apply bg-grey-100;
+  }
+
+  .bg-brand-card {
+    @apply bg-white;
+  }
+
+  .border-brand {
+    @apply border-green-100;
+  }
+
+  .text-brand-muted {
+    @apply text-grey-300;
+  }
+
+  .shadow-xs {
+    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  }
 }
