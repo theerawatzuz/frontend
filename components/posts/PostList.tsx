@@ -7,7 +7,7 @@ interface PostListProps {
 
 export default function PostList({ posts }: PostListProps) {
   return (
-    <div className="space-y-0 w-full flex flex-col items-start justify-start">
+    <div className="w-full max-w-[798px] justify-start">
       {posts.map((post, index) => (
         <PostCard key={post.id} post={post} isFirst={index === 0} isLast={index === posts.length - 1} />
       ))}

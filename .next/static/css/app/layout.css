@@ -1142,6 +1142,9 @@ video {
 .min-w-\[280px\] {
   min-width: 280px;
 }
+.min-w-\[768\] {
+  min-width: 768;
+}
 .max-w-\[--skeleton-width\] {
   max-width: var(--skeleton-width);
 }
@@ -1168,6 +1171,9 @@ video {
 }
 .max-w-xs {
   max-width: 20rem;
+}
+.max-w-\[378px\] {
+  max-width: 378px;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -2610,6 +2616,11 @@ video {
 
 .group\/menu-item:focus-within .group-focus-within\/menu-item\:opacity-100 {
   opacity: 1;
+}
+
+.group:hover .group-hover\:text-green-500 {
+  --tw-text-opacity: 1;
+  color: rgb(36 56 49 / var(--tw-text-opacity, 1));
 }
 
 .group\/menu-item:hover .group-hover\/menu-item\:opacity-100 {
