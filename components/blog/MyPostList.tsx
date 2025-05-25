@@ -11,7 +11,6 @@ export default function MyPostList(){
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Move user check outside of the effect to prevent unnecessary re-renders
   const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null
   const user = userStr ? JSON.parse(userStr) : null
 
@@ -21,10 +20,16 @@ export default function MyPostList(){
     try {
       setIsLoading(true)
       const data = await postService.getPost(user.id)
-      setPosts([data])
+      // Check if data exists and is not empty
+      if (data && Object.keys(data).length > 0) {
+        setPosts([data])
+      } else {
+        setPosts([])
+      }
       setError(null)
     } catch (error: any) {
       setError(error.message)
+      setPosts([]) // Reset posts on error
     } finally {
       setIsLoading(false)
     }

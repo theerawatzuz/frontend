@@ -1,33 +1,39 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import type { Post } from "@/lib/types"
+import { postService } from '@/lib/api-service'
 
 interface DeletePostModalProps {
   isOpen: boolean
   onClose: () => void
   post: Post
+  onSuccess?: () => void
 }
 
-export default function DeletePostModal({ isOpen, onClose, post }: DeletePostModalProps) {
+export default function DeletePostModal({ isOpen, onClose, post, onSuccess }: DeletePostModalProps) {
   const [isDeleting, setIsDeleting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   if (!isOpen) return null
 
   const handleDelete = async () => {
     setIsDeleting(true)
+    setError(null)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Here you would typically make an API call to delete the post
-    console.log("Deleting post:", post.id)
-
-    setIsDeleting(false)
-    onClose()
+    try {
+      await postService.deletePost(post.id)
+      if (onSuccess) {
+        onSuccess()
+      }
+      onClose()
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete post')
+    } finally {
+      setIsDeleting(false)
+    }
   }
 
   const handleBackdropClick = (e: React.MouseEvent) => {

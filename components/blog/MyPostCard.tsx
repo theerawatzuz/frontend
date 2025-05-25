@@ -107,7 +107,17 @@ export default function MyPostCard({ post, isFirst, isLast, onPostUpdated }: MyP
       />
 
       {/* Delete Modal */}
-      <DeletePostModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} post={post} />
+      <DeletePostModal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)} 
+        post={post}
+        onSuccess={() => {
+          setIsDeleteModalOpen(false)
+          if (onPostUpdated) {
+            onPostUpdated()
+          }
+        }}
+      />
     </>
   )
 }
