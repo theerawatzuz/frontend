@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import ForumLayout from "@/components/layout/ForumLayout"
 import CommentSection from "@/components/comments/CommentSection"
 import type { Post } from "@/lib/types"
 import CommentForm from "@/components/comments/CommentForm"
@@ -25,9 +24,8 @@ export default function PostDetail({ post }: PostDetailProps) {
   }
 
   return (
-    <ForumLayout>
-      <div className="space-y-10">
-        {/* Back Button */}
+    <div className="space-y-10">
+      {/* Back Button */}
         <Button
           variant="ghost"
           size="icon"
@@ -119,6 +117,5 @@ export default function PostDetail({ post }: PostDetailProps) {
           <CommentSection postId={post.id} />
         </div>
       </div>
-    </ForumLayout>
   )
 }

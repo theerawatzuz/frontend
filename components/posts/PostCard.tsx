@@ -15,9 +15,9 @@ export default function PostCard({ post, isFirst, isLast }: PostCardProps) {
     <article
       className={`
         bg-white border-[0.5px] border-grey-100 p-5 hover:shadow-sm transition-shadow
-        w-full max-w-[798px] md:w-[798px] 
-        ${isFirst ? "rounded-t-3xl" : ""} 
-        ${isLast ? "rounded-b-3xl" : ""}
+        w-full max-w-[798px] md:max-w-[798px] 
+        ${isFirst ? "rounded-t-xl" : ""} 
+        ${isLast ? "rounded-b-xl" : ""}
       `}
     >
       <div className="space-y-1">

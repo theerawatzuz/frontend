@@ -724,6 +724,15 @@ video {
 .top-full {
   top: 100%;
 }
+.right-full {
+  right: 100%;
+}
+.right-12 {
+  right: 3rem;
+}
+.left-full {
+  left: 100%;
+}
 .z-10 {
   z-index: 10;
 }
@@ -750,6 +759,9 @@ video {
 }
 .z-\[50\] {
   z-index: 50;
+}
+.z-\[80\] {
+  z-index: 80;
 }
 .-mx-1 {
   margin-left: -0.25rem;
@@ -1100,6 +1112,9 @@ video {
 .w-px {
   width: 1px;
 }
+.w-\[140px\] {
+  width: 140px;
+}
 .min-w-0 {
   min-width: 0px;
 }
@@ -1123,6 +1138,9 @@ video {
 }
 .min-w-\[var\(--radix-select-trigger-width\)\] {
   min-width: var(--radix-select-trigger-width);
+}
+.min-w-\[280px\] {
+  min-width: 280px;
 }
 .max-w-\[--skeleton-width\] {
   max-width: var(--skeleton-width);
@@ -1438,6 +1456,22 @@ video {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+.rounded-b-2xl {
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+.rounded-t-2xl {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.rounded-b-xl {
+  border-bottom-right-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
+}
+.rounded-t-xl {
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
 .rounded-tl-sm {
   border-top-left-radius: calc(var(--radius) - 4px);
 }
@@ -1535,6 +1569,9 @@ video {
 .border-\[\#49A569\] {
   --tw-border-opacity: 1;
   border-color: rgb(73 165 105 / var(--tw-border-opacity, 1));
+}
+.border-green-100\/50 {
+  border-color: rgb(216 233 228 / 0.5);
 }
 .border-l-transparent {
   border-left-color: transparent;
@@ -2097,6 +2134,10 @@ video {
 .ring-ring {
   --tw-ring-color: hsl(var(--ring));
 }
+.ring-white {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 255 255 / var(--tw-ring-opacity, 1));
+}
 .ring-offset-background {
   --tw-ring-offset-color: hsl(var(--background));
 }
@@ -2457,6 +2498,16 @@ video {
 .focus\:border-green-300:focus {
   --tw-border-opacity: 1;
   border-color: rgb(43 95 68 / var(--tw-border-opacity, 1));
+}
+
+.focus\:border-white:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+
+.focus\:border-green-100:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(216 233 228 / var(--tw-border-opacity, 1));
 }
 
 .focus\:bg-accent:focus {
@@ -3344,6 +3395,10 @@ video {
 
   .md\:max-w-\[420px\] {
     max-width: 420px;
+  }
+
+  .md\:max-w-\[798px\] {
+    max-width: 798px;
   }
 
   .md\:p-6 {

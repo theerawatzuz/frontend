@@ -41,8 +41,7 @@ export default function CommunityDropdown({ isMobile = false }: CommunityDropdow
         onClick={() => setIsOpen(!isOpen)}
         className={`
           ${isMobile ? "h-10 px-[14px]" : "h-10 px-[14px]"} 
-          bg-white border-grey-300 text-text font-semibold text-sm 
-          hover:bg-green-100/50 hover:border-green-300 
+          bg-transparent border-transparent text-text font-semibold text-sm 
           flex items-center gap-[5px] shadow-xs
           ${isMobile ? "w-[128px]" : "w-[128px]"}
         `}
@@ -61,7 +60,7 @@ export default function CommunityDropdown({ isMobile = false }: CommunityDropdow
           <div
             className={`
               absolute z-50 bg-white border border-[#DADADA] rounded-lg shadow-lg
-              ${isMobile ? "w-[202px] h-[316px] left-0 top-12" : "w-[320px] h-[316px] right-0 top-12"}
+              ${isMobile ? "w-[202px] h-[316px] right-0 top-12 mr-2" : "w-[320px] h-[316px] right-0 top-12"}
             `}
           >
             <div className="py-1 h-full overflow-y-auto">

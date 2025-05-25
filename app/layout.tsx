@@ -10,7 +10,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "a Board - Forum Discussion",
   description: "A modern forum for questions and discussions",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -29,7 +28,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ForumLayout>
-          <div className="space-y-6">
+          <div className="w-full justify-start space-y-6">
             <SearchBar />
             {children}
           </div>
