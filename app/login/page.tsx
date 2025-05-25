@@ -6,17 +6,17 @@ export default function LoginPage() {
       {/* Desktop Layout */}
       <div className="hidden lg:flex h-screen">
         {/* Left side - Login Form */}
-        <div className="flex-1 flex items-center justify-start pl-[215.5px]">
-          <div className="w-[384px]">
+        <div className="flex flex-1 items-center justify-start">
+          <div className="w-full max-w-xs mx-auto">
             <LoginForm />
           </div>
         </div>
 
         {/* Right side - Illustration Panel */}
-        <div className="w-[632px] bg-green-300 rounded-l-[36px] flex flex-col items-center justify-center relative">
-          <div className="flex flex-col items-center space-y-8">
+        <div className="flex flex-1 items-center justify-center w-full bg-green-300 rounded-l-[36px]">
+          <div className="flex flex-col items-center">
             {/* Illustration placeholder */}
-            <div className="w-[299.61px] h-[230px]  rounded-lg flex items-center justify-center">
+            <div className="max-w-xs flex items-center justify-center">
               <img
                 src="/logo.png"
                 alt="Notebook Illustration"
@@ -26,7 +26,7 @@ export default function LoginPage() {
 
             {/* Logo */}
             <h1
-              className="text-white text-[28px] font-normal italic leading-6"
+              className="text-white text-[28px] font-normal italic mt-3"
               style={{ fontFamily: "Castoro, serif" }}
             >
               a Board
@@ -38,7 +38,7 @@ export default function LoginPage() {
       {/* Mobile Layout */}
       <div className="lg:hidden flex flex-col h-screen">
         {/* Top Panel - Illustration */}
-        <div className="h-[362px] bg-green-300 rounded-b-[36px] flex flex-col items-center justify-center relative">
+        <div className="h-full bg-green-300 rounded-b-[36px] flex flex-col items-center justify-center relative">
           <div className="flex flex-col items-center space-y-6">
             {/* Illustration placeholder */}
             <div className="w-[171.46px] h-[131.62px]  rounded-lg flex items-center justify-center">
@@ -60,8 +60,8 @@ export default function LoginPage() {
         </div>
 
         {/* Bottom Panel - Login Form */}
-        <div className="flex-1 flex items-start justify-center pt-[129px] px-4">
-          <div className="w-[343px]">
+        <div className="flex flex-col h-full items-start justify-center  px-4">
+          <div className="w-full max-w-md mx-auto">
             <LoginForm />
           </div>
         </div>
