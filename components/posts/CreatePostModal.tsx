@@ -233,20 +233,20 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
           </div>
 
           {/* Action Buttons */}
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 flex flex-col w-full items-center justify-center">
             <Button
               type="button"
               variant="outline"
               onClick={handleCancel}
               disabled={isSubmitting}
-              className="w-[105px] h-[40px] border-success text-success hover:bg-success/5 hover:border-success/80"
+              className="w-full h-[40px] border-success text-success hover:bg-success/5 hover:border-success/80"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting || !selectedCategory || !title.trim() || !content.trim()}
-              className="w-[105px] h-[40px] bg-success hover:bg-success/90 text-white"
+              className="w-full h-[40px] bg-success hover:bg-success/90 text-white"
             >
               {isSubmitting ? "Posting..." : "Post"}
             </Button>
