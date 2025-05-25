@@ -1,16 +1,20 @@
-"use client"
+"use client";
 
-import { usePathname } from "next/navigation"
-import ForumLayout from "./ForumLayout"
-import SearchBar from "@/components/ui/SearchBar"
+import { usePathname } from "next/navigation";
+import ForumLayout from "./ForumLayout";
+import SearchBar from "@/components/ui/SearchBar";
 
-export default function LayoutContent({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const isLoginPage = pathname === '/login'
-  const showSearchBar = !pathname.startsWith('/post/')
+export default function LayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const isLoginPage = pathname === "/login";
+  const showSearchBar = !pathname.startsWith("/post/");
 
   if (isLoginPage) {
-    return children
+    return children;
   }
 
   return (
@@ -20,5 +24,5 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
         {children}
       </div>
     </ForumLayout>
-  )
+  );
 }

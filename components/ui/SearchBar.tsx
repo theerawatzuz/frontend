@@ -1,38 +1,50 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
-import { Search, Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import CreatePostModal from "@/components/posts/CreatePostModal"
-import CommunityDropdown from "./CommunityDropdown"
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import { Search, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import CreatePostModal from "@/components/posts/CreatePostModal";
+import CommunityDropdown from "./CommunityDropdown";
 
-export default function SearchBar() {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState("")
-  const [isFocused, setIsFocused] = useState(false)
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false)
-  const searchContainerRef = useRef<HTMLDivElement>(null)
+interface SearchBarProps {
+  onFilterResult?: Dispatch<SetStateAction<any>>;
+}
+
+export default function SearchBar({ onFilterResult }: SearchBarProps) {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (isSearchExpanded && 
-          searchContainerRef.current && 
-          !searchContainerRef.current.contains(event.target as Node)) {
-        setIsSearchExpanded(false)
-        setIsFocused(false)
+      if (
+        isSearchExpanded &&
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchExpanded(false);
+        setIsFocused(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isSearchExpanded])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSearchExpanded]);
 
   const handleMobileSearchClick = () => {
-    setIsSearchExpanded(true)
-  }
+    setIsSearchExpanded(true);
+  };
 
   return (
     <>
@@ -78,8 +90,11 @@ export default function SearchBar() {
 
         {/* Mobile Search */}
         <div className="md:hidden flex items-center justify-between gap-1">
-          {isSearchExpanded ? ( 
-             <div className="relative flex-1 max-w-[535px]" ref={searchContainerRef}>
+          {isSearchExpanded ? (
+            <div
+              className="relative flex-1 max-w-[535px]"
+              ref={searchContainerRef}
+            >
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-grey-300" />
               <Input
                 value={searchValue}
@@ -102,28 +117,34 @@ export default function SearchBar() {
                 <div className="absolute inset-0 pointer-events-none rounded-md ring-2 ring-green-300/30 animate-pulse" />
               )}
             </div>
-           ) : (
-          <div className="flex items-center gap-1 flex-1 justify-between">
-            <div>
-            <Search className="w-5 h-5 text-text flex-shrink-0" onClick={handleMobileSearchClick}/>
+          ) : (
+            <div className="flex items-center gap-1 flex-1 justify-between">
+              <div>
+                <Search
+                  className="w-5 h-5 text-text flex-shrink-0"
+                  onClick={handleMobileSearchClick}
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <CommunityDropdown isMobile />
+                <Button
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="bg-success hover:bg-success/90 text-white h-10 px-4 font-semibold text-sm flex-shrink-0"
+                >
+                  Create
+                  <Plus className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-            <CommunityDropdown isMobile />
-            <Button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="bg-success hover:bg-success/90 text-white h-10 px-4 font-semibold text-sm flex-shrink-0"
-            >
-              Create
-              <Plus className="w-4 h-4 ml-1" />
-            </Button>
-            </div>
-          </div>
           )}
         </div>
       </div>
 
       {/* Create Post Modal */}
-      <CreatePostModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+      <CreatePostModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </>
-  )
+  );
 }

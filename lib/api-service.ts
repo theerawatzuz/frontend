@@ -35,6 +35,12 @@ export const postService = {
   deletePost: async (id: number): Promise<void> => {
     await axiosInstance.delete(`/posts/${id}`);
   },
+  getFilter: async (type: string, queryText: string): Promise<Post[]> => {
+    const response = await axiosInstance.get(`/posts/filter`, {
+      params: { type, queryText },
+    });
+    return response.data;
+  },
 };
 
 export const commentService = {
