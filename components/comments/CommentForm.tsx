@@ -49,14 +49,14 @@ export default function CommentForm({ postId, onCancel, onSubmit }: CommentFormP
           variant="outline"
           onClick={onCancel}
           disabled={isSubmitting}
-          className="border-success text-success hover:bg-success/5 hover:border-success/80"
+          className="w-[105px] h-[40px] border-success text-success hover:bg-success/5 hover:border-success/80"
         >
           Cancel
         </Button>
         <Button
           type="submit"
           disabled={isSubmitting || !comment.trim()}
-          className="bg-success hover:bg-success/90 text-white"
+          className="w-[105px] h-[40px] bg-success hover:bg-success/90 text-white"
         >
           {isSubmitting ? "Posting..." : "Post"}
         </Button>

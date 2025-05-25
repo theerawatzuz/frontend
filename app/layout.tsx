@@ -2,8 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import ForumLayout from "@/components/layout/ForumLayout"
-import SearchBar from "@/components/ui/SearchBar"
+import LayoutContent from "../components/layout/LayoutContent"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,12 +26,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <ForumLayout>
-          <div className="w-full justify-start space-y-6">
-            <SearchBar />
-            {children}
-          </div>
-        </ForumLayout>
+        <LayoutContent>
+          {children}
+        </LayoutContent>
       </body>
     </html>
   )

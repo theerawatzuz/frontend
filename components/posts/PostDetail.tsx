@@ -24,8 +24,7 @@ export default function PostDetail({ post }: PostDetailProps) {
   }
 
   return (
-    <div className="space-y-10">
-      {/* Back Button */}
+    <div className="space-y-10 max-w-[800px]">
         <Button
           variant="ghost"
           size="icon"
@@ -84,13 +83,21 @@ export default function PostDetail({ post }: PostDetailProps) {
                 <MessageCircle className="w-4 h-4 text-grey-300" />
                 <span className="text-grey-300 text-xs">{post.comments} Comments</span>
               </div>
-              <Button
-                variant="outline"
-                className="border-success text-success hover:bg-success/5 hover:border-success/80"
-                onClick={() => setShowCommentForm(!showCommentForm)}
-              >
-                Add a comment
-              </Button>
+              {showCommentForm ? (
+              <div>
+
+              </div>
+     
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-green-500 border-green-500 hover:bg-green-100/50"
+                  onClick={() => setShowCommentForm(true)}
+                >
+                  Add Comment
+                </Button>
+              )}
             </div>
 
             {/* Comment Form */}

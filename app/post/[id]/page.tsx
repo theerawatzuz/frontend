@@ -15,7 +15,13 @@ export default function PostPage({ params }: PostPageProps) {
     notFound()
   }
 
-  return <PostDetail post={post} />
+  return (
+    <div className="flex justify-center min-h-screen p-4">
+
+      <PostDetail post={post} />
+    </div>
+  )
+    
 }
 
 export function generateStaticParams() {
