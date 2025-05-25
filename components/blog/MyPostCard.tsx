@@ -14,9 +14,10 @@ interface MyPostCardProps {
   post: Post
   isFirst?: boolean
   isLast?: boolean
+  onPostUpdated?: () => void
 }
 
-export default function MyPostCard({ post, isFirst, isLast }: MyPostCardProps) {
+export default function MyPostCard({ post, isFirst, isLast, onPostUpdated }: MyPostCardProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
@@ -93,7 +94,17 @@ export default function MyPostCard({ post, isFirst, isLast }: MyPostCardProps) {
       </Link>
 
       {/* Edit Modal */}
-      <EditPostModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} post={post} />
+      <EditPostModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        post={post}
+        onSuccess={() => {
+          setIsEditModalOpen(false)
+          if (onPostUpdated) {
+            onPostUpdated()
+          }
+        }}
+      />
 
       {/* Delete Modal */}
       <DeletePostModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} post={post} />

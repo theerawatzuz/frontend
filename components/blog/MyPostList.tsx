@@ -1,7 +1,7 @@
 "use client"
 import MyPostCard from "./MyPostCard"
 import type { Post } from "@/lib/types"
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { postService } from '@/lib/api-service'
 
 
@@ -11,24 +11,44 @@ export default function MyPostList(){
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const userStr = localStorage.getItem('user')
+  // Move user check outside of the effect to prevent unnecessary re-renders
+  const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null
   const user = userStr ? JSON.parse(userStr) : null
 
+  const fetchPosts = useCallback(async () => {
+    if (!user?.id) return
+
+    try {
+      setIsLoading(true)
+      const data = await postService.getPost(user.id)
+      setPosts([data])
+      setError(null)
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [user?.id])
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await postService.getPost(user.id)
-        setPosts([data])
-      } catch (error: any) {
-        setError(error.message)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     fetchPosts()
-  }, []) 
+  }, [fetchPosts]) 
+
+  if (isLoading) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-grey-300">Loading posts...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12 text-red-500">
+        <p>Error: {error}</p>
+      </div>
+    )
+  }
 
   if (posts.length === 0) {
     return (
@@ -42,7 +62,13 @@ export default function MyPostList(){
   return (
     <div className="space-y-0">
       {posts.map((post, index) => (
-        <MyPostCard key={post.id} post={post} isFirst={index === 0} isLast={index === posts.length - 1} />
+        <MyPostCard 
+          key={post.id} 
+          post={post} 
+          isFirst={index === 0} 
+          isLast={index === posts.length - 1} 
+          onPostUpdated={fetchPosts}
+        />
       ))}
     </div>
   )

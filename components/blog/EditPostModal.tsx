@@ -17,9 +17,10 @@ interface EditPostModalProps {
   onClose: () => void
   post: Post
   onUpdate?: (updatedPost: Post) => void
+  onSuccess?: () => void  // Add callback for successful update
 }
 
-export default function EditPostModal({ isOpen, onClose, post, onUpdate }: EditPostModalProps) {
+export default function EditPostModal({ isOpen, onClose, post, onUpdate, onSuccess }: EditPostModalProps) {
   const [selectedCategory, setSelectedCategory] = useState(post.category)
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
@@ -40,8 +41,14 @@ export default function EditPostModal({ isOpen, onClose, post, onUpdate }: EditP
         content: content.trim(),
       })
 
+      // Call onUpdate with the updated post data
       if (onUpdate) {
         onUpdate(updatedPost)
+      }
+
+      // Trigger refetch in parent component
+      if (onSuccess) {
+        onSuccess()
       }
 
       onClose()
