@@ -4,14 +4,21 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  userInfo?: {
+    fullName: string;
+    avatar: string;
+  } | null;
 }
 
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export default function MobileMenu({ isOpen, onClose, userInfo }: MobileMenuProps) {
   const pathname = usePathname();
+
+  console.log(userInfo);
 
   return (
     <>
@@ -39,6 +46,25 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <path d="M1.10645 7.48804L17.1064 7.48804M17.1064 7.48804L11.1064 1.48804M17.1064 7.48804L11.1064 13.488" stroke="#D8E9E4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           </button>
+        </div>
+
+        {/* User Info */}
+        <div className="px-6">
+          {userInfo ? (
+            <div className="flex items-center gap-4">
+              <Avatar className="w-10 h-10 ring-1 ring-green-100">
+                <AvatarImage src={userInfo?.avatar || "/placeholder.svg"} alt={userInfo?.fullName} />
+                <AvatarFallback className="bg-grey-100 text-grey-300 font-medium text-sm">
+                  {userInfo?.fullName}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-white font-medium text-sm">{userInfo?.fullName}</span>
+            </div>
+          ) : (
+            <Link href="/login" className="text-white font-medium">
+              Sign In
+            </Link>
+          )}
         </div>
 
         {/* Navigation */}

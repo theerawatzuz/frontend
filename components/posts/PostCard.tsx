@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import type { Post } from "@/lib/types"
 import Link from "next/link"
+import { formatDate } from '@/lib/date-utils'
 
 interface PostCardProps {
   post: Post
@@ -28,7 +29,10 @@ export default function PostCard({ post, isFirst, isLast }: PostCardProps) {
               <AvatarImage src={post.avatar || "/placeholder.svg"} alt={post.author} />
               <AvatarFallback className="bg-green-100 text-green-500 font-medium">{post.author[0]}</AvatarFallback>
             </Avatar>
-            <span className="text-grey-300 font-medium text-sm">{post.author}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-text font-medium text-sm">{post.author}</span>
+              <span className="text-grey-300 text-xs">{formatDate(post.time)}</span>
+            </div>
             <Badge
               variant="secondary"
               className="bg-green-100 text-green-500 text-xs px-2 py-1 rounded-2xl border-0 hover:bg-green-100/80"

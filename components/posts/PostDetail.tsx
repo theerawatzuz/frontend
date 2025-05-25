@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ArrowLeft, MessageCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -10,6 +10,8 @@ import CommentSection from "@/components/comments/CommentSection"
 import type { Post } from "@/lib/types"
 import CommentForm from "@/components/comments/CommentForm"
 import CommentModal from "@/components/comments/CommentModal"
+import { postService } from '@/lib/api-service'
+import { formatDate } from '@/lib/date-utils'
 
 interface PostDetailProps {
   post: Post
@@ -18,10 +20,30 @@ interface PostDetailProps {
 export default function PostDetail({ post }: PostDetailProps) {
   const router = useRouter()
   const [showCommentForm, setShowCommentForm] = useState(false)
+  const [postDetail, setPostDetail] = useState<Post | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+      const fetchPostDetail = async () => {
+        try {
+          const data = await postService.getPost(post.id)
+          setPostDetail(data)
+        } catch (error: any) {
+          setError(error.message)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchPostDetail()
+    }, [post.id])
+
 
   const handleBack = () => {
     router.back()
   }
+
 
   return (
     <div className="space-y-10 max-w-[800px]">
@@ -42,38 +64,29 @@ export default function PostDetail({ post }: PostDetailProps) {
             <div className="flex items-center gap-2.5">
               <div className="relative">
                 <Avatar className="w-12 h-12 ring-2 ring-green-100">
-                  <AvatarImage src={post.avatar || "/placeholder.svg"} alt={post.author} />
+                  <AvatarImage src={postDetail?.avatar || "/placeholder.svg"} alt={postDetail?.author} />
                   <AvatarFallback className="bg-green-100 text-green-500 font-medium text-lg">
-                    {post.author[0]}
+                    {postDetail?.author}
                   </AvatarFallback>
                 </Avatar>
                 {/* Online indicator */}
                 <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 border-2 border-white rounded-full"></div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-text font-medium text-sm">{post.author}</span>
-                <span className="text-grey-300 text-xs">{post.time}</span>
+                <span className="text-text font-medium text-sm">{postDetail?.author}</span>
+                <span className="text-grey-300 text-xs">{postDetail?.time ? formatDate(postDetail.time) : ''}</span>
               </div>
               <Badge variant="secondary" className="bg-green-100 text-green-500 text-xs px-2 py-1 rounded-2xl border-0">
-                {post.category}
+                {postDetail?.category}
               </Badge>
             </div>
 
             {/* Post Content */}
             <div className="space-y-4">
-              <h1 className="text-text font-semibold text-2xl md:text-[28px] leading-tight">{post.title}</h1>
+              <h1 className="text-text font-semibold text-2xl md:text-[28px] leading-tight">{postDetail?.title}</h1>
               <div className="text-text text-sm leading-relaxed">
-                <p className="mb-4">{post.content}</p>
-                <p className="mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat.
-                </p>
-                <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                  laborum.
-                </p>
+                <p className="mb-4">{postDetail?.content}</p>
+               
               </div>
             </div>
 
@@ -81,7 +94,7 @@ export default function PostDetail({ post }: PostDetailProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <MessageCircle className="w-4 h-4 text-grey-300" />
-                <span className="text-grey-300 text-xs">{post.comments} Comments</span>
+                <span className="text-grey-300 text-xs">{postDetail?.comments} Comments</span>
               </div>
               {showCommentForm ? (
               <div>

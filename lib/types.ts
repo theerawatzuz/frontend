@@ -25,8 +25,8 @@ export interface Category {
 export interface Comment {
   id: number
   postId: number
-  author: User
+  author: string
+  avatar: string
   content: string
-  createdAt: string
-  updatedAt?: string
+  time: string
 }

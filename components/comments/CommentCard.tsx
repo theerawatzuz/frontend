@@ -12,20 +12,20 @@ export default function CommentCard({ comment }: CommentCardProps) {
       {/* Comment Header */}
       <div className="flex items-center gap-2.5">
         <Avatar className="w-10 h-10 ring-1 ring-green-100">
-          <AvatarImage src={comment.author.avatar || "/placeholder.svg"} alt={comment.author.name} />
+          <AvatarImage src={comment?.avatar || "/placeholder.svg"} alt={comment?.author} />
           <AvatarFallback className="bg-grey-100 text-grey-300 font-medium text-sm">
-            {comment.author.name}
+            {comment?.author}
           </AvatarFallback>
         </Avatar>
         <div className="flex items-center gap-2.5">
-          <span className="text-text font-medium text-sm">{comment.author.name}</span>
-          <span className="text-grey-300 text-xs">{formatTimeAgo(new Date(comment.createdAt))}</span>
+          <span className="text-text font-medium text-sm">{comment?.author}</span>
+          <span className="text-grey-300 text-xs">{formatTimeAgo(new Date(comment.time))}</span>
         </div>
       </div>
 
       {/* Comment Content */}
       <div className="ml-12 md:ml-[50px]">
-        <p className="text-text text-sm leading-relaxed">{comment.content}</p>
+        <p className="text-text text-sm leading-relaxed">{comment?.content}</p>
       </div>
     </div>
   )

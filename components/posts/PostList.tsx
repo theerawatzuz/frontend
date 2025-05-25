@@ -15,11 +15,16 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    // Skip fetching if we have initialPosts
+    if (initialPosts) {
+      setIsLoading(false)
+      return
+    }
+
     const fetchPosts = async () => {
       try {
         const data = await postService.getPosts()
         setPosts(data)
-        console.log("Fetched posts:", data)
       } catch (error: any) {
         setError(error.message)
       } finally {
@@ -28,7 +33,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
     }
 
     fetchPosts()
-  }, )
+  }, [initialPosts]) // Only run when initialPosts changes
 
   if (isLoading) {
     return <div>Loading posts...</div>
