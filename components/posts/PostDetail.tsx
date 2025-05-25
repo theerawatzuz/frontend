@@ -14,10 +14,10 @@ import { postService } from "@/lib/api-service";
 import { formatDate } from "@/lib/date-utils";
 
 interface PostDetailProps {
-  post: Post;
+  postId: number;
 }
 
-export default function PostDetail({ post }: PostDetailProps) {
+export default function PostDetail({ postId }: PostDetailProps) {
   const router = useRouter();
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [postDetail, setPostDetail] = useState<Post | null>(null);
@@ -27,7 +27,7 @@ export default function PostDetail({ post }: PostDetailProps) {
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
-        const data = await postService.getPost(post.id);
+        const data = await postService.getPost(postId);
         setPostDetail(data);
       } catch (error: any) {
         setError(error.message);
@@ -37,7 +37,7 @@ export default function PostDetail({ post }: PostDetailProps) {
     };
 
     fetchPostDetail();
-  }, [post.id]);
+  }, [postId]);
 
   const handleBack = () => {
     router.back();
@@ -115,7 +115,7 @@ export default function PostDetail({ post }: PostDetailProps) {
         </div>
 
         {/* Comments Section */}
-        <CommentSection postId={post.id} />
+        <CommentSection postId={postId} />
       </div>
     </div>
   );
