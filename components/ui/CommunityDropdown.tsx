@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { ChevronDown, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-const communityOptions = ["History", "Art", "Tech", "Science", "Exercise", "Politics"]
+export const communityOptions = ["History", "Food",  "Pets", "Health", "Fashion",  "Exercise", "Others"]
 
 interface CommunityDropdownProps {
   isMobile?: boolean

@@ -18,7 +18,6 @@ interface MobileMenuProps {
 export default function MobileMenu({ isOpen, onClose, userInfo }: MobileMenuProps) {
   const pathname = usePathname();
 
-  console.log(userInfo);
 
   return (
     <>

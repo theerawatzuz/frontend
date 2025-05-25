@@ -9,14 +9,17 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { categories } from "@/lib/data"
 import type { Post } from "@/lib/types"
+import { communityOptions } from "../../components/ui/CommunityDropdown"
+import { postService } from "@/lib/api-service"
 
 interface EditPostModalProps {
   isOpen: boolean
   onClose: () => void
   post: Post
+  onUpdate?: (updatedPost: Post) => void
 }
 
-export default function EditPostModal({ isOpen, onClose, post }: EditPostModalProps) {
+export default function EditPostModal({ isOpen, onClose, post, onUpdate }: EditPostModalProps) {
   const [selectedCategory, setSelectedCategory] = useState(post.category)
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
@@ -30,15 +33,23 @@ export default function EditPostModal({ isOpen, onClose, post }: EditPostModalPr
     if (!selectedCategory || !title.trim() || !content.trim()) return
 
     setIsSubmitting(true)
+    try {
+      const updatedPost = await postService.updatePost(post.id, {
+        category: selectedCategory,
+        title: title.trim(),
+        content: content.trim(),
+      })
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+      if (onUpdate) {
+        onUpdate(updatedPost)
+      }
 
-    // Here you would typically make an API call to update the post
-    console.log("Updating post:", { id: post.id, category: selectedCategory, title, content })
-
-    setIsSubmitting(false)
-    onClose()
+      onClose()
+    } catch (error) {
+      console.error("Failed to update post:", error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -48,7 +59,6 @@ export default function EditPostModal({ isOpen, onClose, post }: EditPostModalPr
   }
 
   const handleCancel = () => {
-    // Reset to original values
     setSelectedCategory(post.category)
     setTitle(post.title)
     setContent(post.content)
@@ -62,7 +72,10 @@ export default function EditPostModal({ isOpen, onClose, post }: EditPostModalPr
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={handleBackdropClick}>
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
       {/* Desktop Modal */}
       <div className="hidden md:block bg-white rounded-xl p-8 w-full max-w-[685px] relative">
         {/* Close Button */}
@@ -97,17 +110,17 @@ export default function EditPostModal({ isOpen, onClose, post }: EditPostModalPr
               {isDropdownOpen && (
                 <div className="absolute top-12 left-0 w-[320px] bg-white border border-[#DADADA] rounded-lg shadow-lg z-50">
                   <div className="py-1">
-                    {categories.map((category) => (
+                    {communityOptions.map((category, index) => (
                       <button
-                        key={category.id}
+                        key={index}
                         type="button"
-                        onClick={() => handleCategorySelect(category.name)}
+                        onClick={() => handleCategorySelect(category)}
                         className={`w-full flex items-center justify-between px-[14px] py-[10px] text-left hover:bg-gray-50 transition-colors ${
-                          selectedCategory === category.name ? "bg-green-100" : ""
+                          selectedCategory === category ? "bg-green-100" : ""
                         }`}
                       >
-                        <span className="text-[#1C1C1C] font-medium text-base">{category.name}</span>
-                        {selectedCategory === category.name && <Check className="w-5 h-5 text-[#4A4A4A]" />}
+                        <span className="text-[#1C1C1C] font-medium text-base">{category}</span>
+                        {selectedCategory === category && <Check className="w-5 h-5 text-[#4A4A4A]" />}
                       </button>
                     ))}
                   </div>

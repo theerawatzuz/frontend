@@ -37,7 +37,7 @@ export default function MyPostCard({ post, isFirst, isLast }: MyPostCardProps) {
               variant="ghost"
               size="icon"
               onClick={(e) => {
-                e.preventDefault() // ป้องกันการ navigate ไปที่ link
+                e.preventDefault() 
                 setIsEditModalOpen(true)
               }}
               className="w-4 h-4 p-0 hover:bg-green-100/50"
@@ -48,7 +48,7 @@ export default function MyPostCard({ post, isFirst, isLast }: MyPostCardProps) {
               variant="ghost"
               size="icon"
               onClick={(e) => {
-                e.preventDefault() // ป้องกันการ navigate ไปที่ link
+                e.preventDefault() 
                 setIsDeleteModalOpen(true)
               }}
               className="w-4 h-4 p-0 hover:bg-red-100/50"

@@ -37,8 +37,9 @@ export default function CommentForm({ postId, onCancel, onSubmit }: CommentFormP
         disabled={isSubmitting}
         required
       />
-      <div className="flex justify-end gap-2">
+      <div className=" flex justify-end gap-2">
         <Button
+         className="w-[105px] h-[40px] border-success text-success"
           type="button"
           variant="outline"
           onClick={onCancel}
@@ -47,10 +48,11 @@ export default function CommentForm({ postId, onCancel, onSubmit }: CommentFormP
           Cancel
         </Button>
         <Button
+         className="w-[105px] h-[40px] bg-success hover:bg-green-600 text-white"
           type="submit"
           disabled={isSubmitting || !comment.trim()}
         >
-          {isSubmitting ? "Posting..." : "Post Comment"}
+          {isSubmitting ? "Posting..." : "Post"}
         </Button>
       </div>
     </form>
