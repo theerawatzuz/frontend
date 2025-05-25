@@ -6,7 +6,7 @@ import type { Post } from '@/lib/types'
 import PostCard from './PostCard'
 
 interface PostListProps {
-  posts?: Post[]  // Optional because we might fetch posts internally
+  posts?: Post[]  
 }
 
 export default function PostList({ posts: initialPosts }: PostListProps) {
@@ -15,12 +15,11 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (initialPosts) return; // Don't fetch if posts were provided via props
-
     const fetchPosts = async () => {
       try {
         const data = await postService.getPosts()
         setPosts(data)
+        console.log("Fetched posts:", data)
       } catch (error: any) {
         setError(error.message)
       } finally {
@@ -29,7 +28,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
     }
 
     fetchPosts()
-  }, [initialPosts])
+  }, )
 
   if (isLoading) {
     return <div>Loading posts...</div>
