@@ -5,27 +5,37 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { authService } from "@/lib/api-service"
 
 export default function LoginForm() {
   const [username, setUsername] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!username.trim()) return
-
+    if (!username.trim()) {
+      setError("Username is required")
+      return
+    }
+    
     setIsLoading(true)
-
-    // Simulate login process
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Here you would typically make an API call to authenticate
-    console.log("Login attempt with username:", username)
-
-    // Redirect to home page after successful login
-    router.push("/")
+    try {
+      const response = await authService.login(username.trim())
+      if (response.success && response.access_token) {
+        localStorage.setItem('token', response.access_token)
+        localStorage.setItem('user', JSON.stringify(response.user))
+        router.push("/")
+      }
+    } catch (error: any) {
+      console.error('Login failed:', error)
+      setError(error.message || "Login failed. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
@@ -46,6 +56,11 @@ export default function LoginForm() {
             required
           />
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="text-red-500 text-sm">{error}</div>
+        )}
 
         {/* Sign In Button */}
         <Button

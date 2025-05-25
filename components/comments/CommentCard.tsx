@@ -14,7 +14,7 @@ export default function CommentCard({ comment }: CommentCardProps) {
         <Avatar className="w-10 h-10 ring-1 ring-green-100">
           <AvatarImage src={comment.author.avatar || "/placeholder.svg"} alt={comment.author.name} />
           <AvatarFallback className="bg-grey-100 text-grey-300 font-medium text-sm">
-            {comment.author.name[0]}
+            {comment.author.name}
           </AvatarFallback>
         </Avatar>
         <div className="flex items-center gap-2.5">
