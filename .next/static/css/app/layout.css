@@ -1672,6 +1672,9 @@ video {
 .fill-current {
   fill: currentColor;
 }
+.object-cover {
+  object-fit: cover;
+}
 .p-0 {
   padding: 0px;
 }

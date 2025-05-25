@@ -16,8 +16,12 @@ export default function LoginPage() {
         <div className="w-[632px] bg-green-300 rounded-l-[36px] flex flex-col items-center justify-center relative">
           <div className="flex flex-col items-center space-y-8">
             {/* Illustration placeholder */}
-            <div className="w-[299.61px] h-[230px] bg-white/10 rounded-lg flex items-center justify-center">
-              <div className="text-white/60 text-sm">Notebook Illustration</div>
+            <div className="w-[299.61px] h-[230px]  rounded-lg flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="Notebook Illustration"
+                className="w-full h-full object-cover rounded-lg"
+                />
             </div>
 
             {/* Logo */}
@@ -37,8 +41,12 @@ export default function LoginPage() {
         <div className="h-[362px] bg-green-300 rounded-b-[36px] flex flex-col items-center justify-center relative">
           <div className="flex flex-col items-center space-y-6">
             {/* Illustration placeholder */}
-            <div className="w-[171.46px] h-[131.62px] bg-white/10 rounded-lg flex items-center justify-center">
-              <div className="text-white/60 text-xs">Notebook</div>
+            <div className="w-[171.46px] h-[131.62px]  rounded-lg flex items-center justify-center">
+                <img
+                src="/logo.png"
+                alt="Notebook Illustration"
+                className="w-full h-full object-cover rounded-lg"
+                />
             </div>
 
             {/* Logo */}

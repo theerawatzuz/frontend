@@ -40,7 +40,7 @@ export default function LoginForm() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
+            placeholder="Username"
             className="w-full h-11 bg-[#F9F9F9] border-[#DADADA] text-[#A0AFBA] placeholder:text-[#A0AFBA] focus:border-green-300 focus:ring-green-300 rounded-lg px-[14px] py-[10px] text-base leading-6"
             disabled={isLoading}
             required
