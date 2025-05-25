@@ -26,7 +26,7 @@ export default function MyPostCard({ post, isFirst, isLast }: MyPostCardProps) {
         <article
           className={`
             bg-white border-[0.5px] border-grey-100 p-5 hover:shadow-sm transition-shadow relative cursor-pointer
-            w-full max-w-[798px] md:w-[798px] 
+            w-full max-w-[798px] 
             ${isFirst ? "rounded-t-xl" : ""} 
             ${isLast ? "rounded-b-xl" : ""}
           `}
