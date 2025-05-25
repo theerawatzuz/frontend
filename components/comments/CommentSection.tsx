@@ -1,73 +1,74 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react'
-import { commentService } from '@/lib/api-service'
-import type { Comment } from '@/lib/types'
-import CommentCard from './CommentCard'
-import CommentForm from './CommentForm'
-import { Button } from '../ui/button'
+import { useEffect, useState } from "react";
+import { commentService } from "@/lib/api-service";
+import type { Comment } from "@/lib/types";
+import CommentCard from "./CommentCard";
+import CommentForm from "./CommentForm";
+import { Button } from "../ui/button";
+import CommentModal from "./CommentModal";
 
 interface CommentSectionProps {
-  postId: number
+  postId: number;
 }
 
 export default function CommentSection({ postId }: CommentSectionProps) {
-  const [comments, setComments] = useState<Comment[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [isFormVisible, setIsFormVisible] = useState(false)
-  const [user, setUser] = useState<any>(null)
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const userStr = localStorage.getItem('user')
+    const userStr = localStorage.getItem("user");
     if (userStr) {
       try {
-        setUser(JSON.parse(userStr))
+        setUser(JSON.parse(userStr));
       } catch (e) {
-        console.error('Error parsing user data:', e)
+        console.error("Error parsing user data:", e);
       }
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const data = await commentService.getComments(postId)
-        setComments(data)
+        const data = await commentService.getComments(postId);
+        setComments(data);
       } catch (error: any) {
-        setError(error.message)
+        setError(error.message);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchComments()
-  }, [postId])
+    fetchComments();
+  }, [postId]);
 
   const handleAddComment = async (content: string) => {
     if (!user) {
-      setError("Please login to add a comment")
-      return
+      setError("Please login to add a comment");
+      return;
     }
 
     try {
-      const newComment = await commentService.createComment(postId, { 
-        content, 
+      const newComment = await commentService.createComment(postId, {
+        content,
         fullName: user.fullName,
-      })
-      setComments(prev => [...prev, newComment])
-      setIsFormVisible(false)
+      });
+      setComments((prev) => [...prev, newComment]);
+      setIsFormVisible(false);
     } catch (error: any) {
-      setError(error.message)
+      setError(error.message);
     }
-  }
+  };
 
   if (isLoading) {
-    return <div>Loading comments...</div>
+    return <div>Loading comments...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -81,17 +82,30 @@ export default function CommentSection({ postId }: CommentSectionProps) {
         Add Comment
       </Button>
 
+      {/* Desktop: แสดง CommentForm */}
       {isFormVisible && (
-        <CommentForm
-          postId={postId}
-          onSubmit={handleAddComment}
-          onCancel={() => setIsFormVisible(false)}
-        />
+        <div className="hidden md:block">
+          <CommentForm
+            postId={postId}
+            onSubmit={handleAddComment}
+            onCancel={() => setIsFormVisible(false)}
+          />
+        </div>
       )}
+
+      {/* Mobile: แสดง CommentModal */}
+      <div className="block md:hidden">
+        <CommentModal
+          postId={postId}
+          isOpen={isFormVisible}
+          onSubmit={handleAddComment}
+          onClose={() => setIsFormVisible(false)}
+        />
+      </div>
 
       {comments.map((comment) => (
         <CommentCard key={comment.id} comment={comment} />
       ))}
     </div>
-  )
+  );
 }

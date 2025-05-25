@@ -1,69 +1,85 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { X, ChevronDown, Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { categories } from "@/lib/data"
+import { useState } from "react";
+import { X, ChevronDown, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { categories } from "@/lib/data";
+import { communityOptions } from "../ui/CommunityDropdown";
+import { postService } from "@/lib/api-service";
+import { useRouter } from "next/navigation";
 
 interface CreatePostModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
+  onPostCreated?: () => void;
 }
 
-export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
-  const [selectedCategory, setSelectedCategory] = useState("")
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+export default function CreatePostModal({
+  isOpen,
+  onClose,
+  onPostCreated,
+}: CreatePostModalProps) {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const router = useRouter();
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!selectedCategory || !title.trim() || !content.trim()) return
+    e.preventDefault();
+    if (!selectedCategory || !title.trim() || !content.trim()) return;
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Here you would typically make an API call to create the post
-    console.log("Creating post:", { category: selectedCategory, title, content })
-
-    // Reset form and close modal
-    setSelectedCategory("")
-    setTitle("")
-    setContent("")
-    setIsSubmitting(false)
-    onClose()
-  }
+    try {
+      await postService.createPost({
+        category: selectedCategory,
+        title,
+        content,
+      });
+      if (typeof onPostCreated === "function") onPostCreated();
+      setSelectedCategory("");
+      setTitle("");
+      setContent("");
+      setIsSubmitting(false);
+      onClose();
+      router.push(window.location.pathname + "?success=1");
+    } catch (error) {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   const handleCancel = () => {
-    setSelectedCategory("")
-    setTitle("")
-    setContent("")
-    setIsDropdownOpen(false)
-    onClose()
-  }
+    setSelectedCategory("");
+    setTitle("");
+    setContent("");
+    setIsDropdownOpen(false);
+    onClose();
+  };
 
   const handleCategorySelect = (categoryName: string) => {
-    setSelectedCategory(categoryName)
-    setIsDropdownOpen(false)
-  }
+    setSelectedCategory(categoryName);
+    setIsDropdownOpen(false);
+  };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={handleBackdropClick}>
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
       {/* Desktop Modal */}
       <div className="hidden md:block bg-white rounded-xl p-8 w-full max-w-[685px] relative">
         {/* Close Button */}
@@ -78,7 +94,9 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
 
         {/* Modal Content */}
         <form onSubmit={handleSubmit} className="space-y-8">
-          <h2 className="text-[28px] font-semibold text-text leading-6">Create Post</h2>
+          <h2 className="text-[28px] font-semibold text-text leading-6">
+            Create Post
+          </h2>
 
           <div className="space-y-4 relative">
             {/* Category Dropdown */}
@@ -98,17 +116,21 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
               {isDropdownOpen && (
                 <div className="absolute top-12 left-0 w-[320px] bg-white border border-[#DADADA] rounded-lg shadow-lg z-50">
                   <div className="py-1">
-                    {categories.map((category) => (
+                    {communityOptions.map((category, index) => (
                       <button
-                        key={category.id}
+                        key={index}
                         type="button"
-                        onClick={() => handleCategorySelect(category.name)}
+                        onClick={() => handleCategorySelect(category)}
                         className={`w-full flex items-center justify-between px-[14px] py-[10px] text-left hover:bg-gray-50 transition-colors ${
-                          selectedCategory === category.name ? "bg-green-100" : ""
+                          selectedCategory === category ? "bg-green-100" : ""
                         }`}
                       >
-                        <span className="text-[#1C1C1C] font-medium text-base">{category.name}</span>
-                        {selectedCategory === category.name && <Check className="w-5 h-5 text-[#4A4A4A]" />}
+                        <span className="text-[#1C1C1C] font-medium text-base">
+                          {category}
+                        </span>
+                        {selectedCategory === category && (
+                          <Check className="w-5 h-5 text-[#4A4A4A]" />
+                        )}
                       </button>
                     ))}
                   </div>
@@ -150,7 +172,12 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
             </Button>
             <Button
               type="submit"
-              disabled={isSubmitting || !selectedCategory || !title.trim() || !content.trim()}
+              disabled={
+                isSubmitting ||
+                !selectedCategory ||
+                !title.trim() ||
+                !content.trim()
+              }
               className="w-[105px] h-[40px] bg-success hover:bg-success/90 text-white"
             >
               {isSubmitting ? "Posting..." : "Post"}
@@ -173,7 +200,9 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
 
         {/* Modal Content */}
         <form onSubmit={handleSubmit} className="space-y-8">
-          <h2 className="text-2xl font-semibold text-text leading-6">Create Post</h2>
+          <h2 className="text-2xl font-semibold text-text leading-6">
+            Create Post
+          </h2>
 
           <div className="space-y-4 relative">
             {/* Category Dropdown */}
@@ -193,17 +222,21 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
               {isDropdownOpen && (
                 <div className="absolute top-12 left-0 w-[311px] bg-white border border-[#DADADA] rounded-lg shadow-lg z-50">
                   <div className="py-1">
-                    {categories.map((category) => (
+                    {communityOptions.map((category, index) => (
                       <button
-                        key={category.id}
+                        key={index}
                         type="button"
-                        onClick={() => handleCategorySelect(category.name)}
+                        onClick={() => handleCategorySelect(category)}
                         className={`w-full flex items-center justify-between px-[14px] py-[10px] text-left hover:bg-gray-50 transition-colors ${
-                          selectedCategory === category.name ? "bg-green-100" : ""
+                          selectedCategory === category ? "bg-green-100" : ""
                         }`}
                       >
-                        <span className="text-[#1C1C1C] font-medium text-base">{category.name}</span>
-                        {selectedCategory === category.name && <Check className="w-5 h-5 text-[#4A4A4A]" />}
+                        <span className="text-[#1C1C1C] font-medium text-base">
+                          {category}
+                        </span>
+                        {selectedCategory === category && (
+                          <Check className="w-5 h-5 text-[#4A4A4A]" />
+                        )}
                       </button>
                     ))}
                   </div>
@@ -245,7 +278,12 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
             </Button>
             <Button
               type="submit"
-              disabled={isSubmitting || !selectedCategory || !title.trim() || !content.trim()}
+              disabled={
+                isSubmitting ||
+                !selectedCategory ||
+                !title.trim() ||
+                !content.trim()
+              }
               className="w-full h-[40px] bg-success hover:bg-success/90 text-white"
             >
               {isSubmitting ? "Posting..." : "Post"}
@@ -254,11 +292,21 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
         </form>
 
         {/* Click outside to close dropdown */}
-        {isDropdownOpen && <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />}
+        {isDropdownOpen && (
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsDropdownOpen(false)}
+          />
+        )}
       </div>
 
       {/* Click outside to close dropdown for desktop */}
-      {isDropdownOpen && <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />}
+      {isDropdownOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setIsDropdownOpen(false)}
+        />
+      )}
     </div>
-  )
+  );
 }

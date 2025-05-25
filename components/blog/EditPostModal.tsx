@@ -212,17 +212,17 @@ export default function EditPostModal({ isOpen, onClose, post, onUpdate, onSucce
               {isDropdownOpen && (
                 <div className="absolute top-12 left-0 w-[311px] bg-white border border-[#DADADA] rounded-lg shadow-lg z-50">
                   <div className="py-1">
-                    {categories.map((category) => (
+                                       {communityOptions.map((category, index) => (
                       <button
-                        key={category.id}
+                        key={index}
                         type="button"
-                        onClick={() => handleCategorySelect(category.name)}
+                        onClick={() => handleCategorySelect(category)}
                         className={`w-full flex items-center justify-between px-[14px] py-[10px] text-left hover:bg-gray-50 transition-colors ${
-                          selectedCategory === category.name ? "bg-green-100" : ""
+                          selectedCategory === category ? "bg-green-100" : ""
                         }`}
                       >
-                        <span className="text-[#1C1C1C] font-medium text-base">{category.name}</span>
-                        {selectedCategory === category.name && <Check className="w-5 h-5 text-[#4A4A4A]" />}
+                        <span className="text-[#1C1C1C] font-medium text-base">{category}</span>
+                        {selectedCategory === category && <Check className="w-5 h-5 text-[#4A4A4A]" />}
                       </button>
                     ))}
                   </div>

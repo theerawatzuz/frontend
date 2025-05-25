@@ -1,49 +1,55 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CommentModalProps {
-  postId: number
-  isOpen: boolean
-  onClose: () => void
+  postId: number;
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (content: string) => Promise<void>;
 }
 
-export default function CommentModal({ postId, isOpen, onClose }: CommentModalProps) {
-  const [comment, setComment] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+export default function CommentModal({
+  postId,
+  isOpen,
+  onClose,
+  onSubmit,
+}: CommentModalProps) {
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!comment.trim()) return
+    e.preventDefault();
+    if (!comment.trim()) return;
 
-    setIsSubmitting(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Here you would typically make an API call to save the comment
-    console.log("Submitting comment:", { postId, comment })
-
-    setComment("")
-    setIsSubmitting(false)
-    onClose()
-  }
+    setIsSubmitting(true);
+    try {
+      await onSubmit(comment.trim());
+      setComment("");
+      onClose();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={handleBackdropClick}>
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
       <div className="bg-white rounded-xl p-8 w-full max-w-[343px] relative">
         {/* Close Button */}
         <Button
@@ -90,5 +96,5 @@ export default function CommentModal({ postId, isOpen, onClose }: CommentModalPr
         </div>
       </div>
     </div>
-  )
+  );
 }
